@@ -8,10 +8,10 @@ import time
 
 start_time = time.time()
 
+
 def imgopen(filename):
     """This function opens an image file"""
     img = Image.open(filename)
-    print(img)
     loadedimg = img.load()
     return (img, loadedimg)
 
@@ -51,8 +51,7 @@ def getpixels(image, width, height):
     for y in range(0, height):
         for x in range(0, width):
             red, green, blue = (image[x, y])
-            hsvcolors = colorsys.rgb_to_hsv(red, green, blue)
-            array.append(hsvcolors)
+            array.append(image[x, y])
             """print("Values for pixel of x: {0} and y: {1}".format(x + 1, y + 1))
             print("RGB values: {0}".format(image[x, y]))  # we get the rgb value for debug purposes
             print("HSV values: {0}".format(hsvcolors))
@@ -62,11 +61,31 @@ def getpixels(image, width, height):
     return array
 
 
-def sortarray(array):
-    """This function just sorts the array
-    """
+def rgbtohsv(array):
+    arraymod = []
+    for x in range(0, len(array)):
+        red, green, blue = array[x]
+        hsvcolors = colorsys.rgb_to_hsv(red, green, blue)
+        arraymod.append(hsvcolors)
+        pass
+    return arraymod
+
+
+def hsvtorgb(array):
+    arraymod = []
+    for x in range(0, len(array)):
+        hue, saturation, value = array[x]
+        rgbcolors = colorsys.hsv_to_rgb(hue, saturation, value)
+        arraymod.append(rgbcolors)
+        pass
+    return arraymod
+
+
+def sortarray_firstvalue(array):
+    """This function sorts the array simply based on the first value.
+       Example: hue for the HSV format (hue, saturation, value), red for RGB and so on"""
     array.sort()
-    return (array)
+    return array
 
 
 def writepixels(array, image, width, height):
@@ -78,22 +97,28 @@ def writepixels(array, image, width, height):
     for y in range(0, height):
         for x in range(0, width):
             # Write the new color
-            hue, saturation, value = array[i]
-            rgbvalues = colorsys.hsv_to_rgb(hue, saturation, value)
-            red, green, blue = rgbvalues
+            red, green, blue = array[i]
+            # image[x, y] = array[i]
             image[x, y] = int(red), int(green), int(blue)
             """print("Values for pixel of x: {0} and y: {1}".format(x + 1, y + 1))
             print("RGB values: {0}".format(image[x, y]))  # we get the rgb value for debug purposes
             print("HSV values: {0}".format(array[i]))
             print("\n")"""
             i += 1
-            #print(image[x, y])
+            # print(image[x, y])
         pass
     pass
-    return (image)
+    return image
 
 
-oldimg, oldimgcontent = imgopen("img-input.jpg")
+print("Which sorting algorithm do you want to use?\n")
+print("1. Hue sorting (HSV)")
+print("2. Brightness - HSP color model (RGB)")
+print("3. Red - Simple red sorting (RGB)")
+
+userinput = input("Enter the number: ")
+
+oldimg, oldimgcontent = imgopen("img-input-large.jpg")
 size = getsize(oldimg)
 width = size[1]
 height = size[2]
@@ -101,12 +126,20 @@ height = size[2]
 # We store the pixel values of the original image in an array
 pixvalues = getpixels(oldimgcontent, width, height)
 
-sortedvalues = sortarray(pixvalues)
+# If the user wants HSV sorting we have to convert the values
+if userinput == "1":
+    pixvalues = rgbtohsv(pixvalues)
 
-#print(pixvalues)
-#print(sortedvalues)
+sortedvalues = sortarray_firstvalue(pixvalues)
+
+# print(pixvalues)
+# print(sortedvalues)
 
 newimg, newimgcontent = imgcreate(width, height)
+
+# Convert the values back from HSV to RGB to write them in the image
+if userinput == "1":
+    sortedvalues = hsvtorgb(sortedvalues)
 
 sortedimg = writepixels(sortedvalues, newimgcontent, width, height)
 
@@ -114,4 +147,4 @@ sortedimg = writepixels(sortedvalues, newimgcontent, width, height)
 # because the output image is not right
 saveimg(newimg, "img-output.jpg")
 
-print("\n-- exec time: %s seconds --" % (time.time() - start_time))
+print("-- exec time: %s seconds --" % (time.time() - start_time))
