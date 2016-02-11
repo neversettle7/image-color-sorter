@@ -1,6 +1,5 @@
 # Image color sorter
----
-<br><br>
+<br>
 > What does this program do?
 
 Basically, it gets an image as input, then outputs the same image with his pixels sorted by color.
