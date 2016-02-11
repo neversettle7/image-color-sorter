@@ -93,7 +93,7 @@ def writepixels(array, image, width, height):
     return (image)
 
 
-oldimg, oldimgcontent = imgopen("oldimg.jpg")
+oldimg, oldimgcontent = imgopen("img-input.jpg")
 size = getsize(oldimg)
 width = size[1]
 height = size[2]
@@ -112,6 +112,6 @@ sortedimg = writepixels(sortedvalues, newimgcontent, width, height)
 
 # Pixel values are correct, but there's an error on the save process
 # because the output image is not right
-saveimg(newimg, "newimg.jpg")
+saveimg(newimg, "img-output.jpg")
 
 print("\n-- exec time: %s seconds --" % (time.time() - start_time))
