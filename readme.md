@@ -14,10 +14,6 @@ Assuming you don't have Python already installed (especially if you're on window
 
 Go ahead with the installation, then open a prompt window and type
     
-    $ python
-
-This will get you in a Python shell. Now type
-    
     $ pip install Pillow
 
 This will install [Pillow][Pillow_link] (Python Imaging Library), which is the library I'm currently using to work on images.
