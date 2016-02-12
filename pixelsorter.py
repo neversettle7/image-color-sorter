@@ -3,6 +3,7 @@
 # colorsys library to manipulate colors
 # operator library to sort the values of the array in the fastest way
 from PIL import Image
+import sys
 import colorsys
 import time
 
@@ -91,10 +92,8 @@ def sort_firstvalue(array):
 def sort_hsp(array):
     """This function sorts the array based on the HSP color model (RGB) of perceived brightness:
     0.299 * red^2 + 0.587 * green^2 + 0.114 * blue^2 """
-    hspstart = time.time()
-    finalarray = []
     sortarray = []
-    for x in range(0,len(array)):
+    for x in range(0, len(array)):
         red, green, blue = array[x]
         brightness = ((0.299 * (red ** 2)) + (0.587 * (green ** 2)) + (0.114 * (blue ** 2)))
         temparray = []
@@ -104,7 +103,6 @@ def sort_hsp(array):
         pass
     sortarray.sort()
     finalarray = [x[1] for x in sortarray]
-    print("***sort_hsp exec time: %s" % (time.time() - hspstart))
     return finalarray
 
 
@@ -113,10 +111,8 @@ def sort_rellum(array):
     0.2126 * red + 0.7152 * green + 0.0722 * blue
     It is based on the photometric definition of luminance with the values normalized to 1 or 100
     for a reference white"""
-    rellumstart = time.time()
-    finalarray = []
     sortarray = []
-    for x in range(0,len(array)):
+    for x in range(0, len(array)):
         red, green, blue = array[x]
         brightness = ((0.2126 * red) + (0.7152 * green) + (0.0722 * blue))
         temparray = []
@@ -126,9 +122,7 @@ def sort_rellum(array):
         pass
     sortarray.sort()
     finalarray = [x[1] for x in sortarray]
-    print("***sort_rellum exec time: %s" % (time.time() - rellumstart))
     return finalarray
-
 
 
 def writepixels(array, image, width, height):
@@ -154,7 +148,12 @@ def writepixels(array, image, width, height):
     return image
 
 
-print("Which sorting algorithm do you want to use?\n")
+# Let the user insert the filename and the chosen algorithm
+print("\n\nInsert the name of the image you want to sort (example: image.jpg)")
+fileinput = input("Leave blank if you want to use the default image (img-input-small.jpg): ")
+if fileinput == "":
+    fileinput = "img-input-small.jpg"
+print("\nWhich sorting algorithm do you want to use?\n")
 print("1. Hue sorting (HSV)")
 print("2. Brightness - HSP color model (RGB)")
 print("3. Relative luminance")
@@ -164,11 +163,12 @@ algo = {'1': 'hsv', '2': 'hsp', '3': 'rellum', '4': 'red'}
 userinput = input("Select the algorithm: ")
 if userinput in algo:
     userchoice = algo[userinput]
-    print(userchoice)
 else:
-    print("Number not recognised.")
+    print("Number not recognised. Exiting program.")
+    sys.exit()
 
-oldimg, oldimgcontent = imgopen("img-input-large.jpg")
+# Open the file, get the content and the size
+oldimg, oldimgcontent = imgopen(fileinput)
 size = getsize(oldimg)
 width = size[1]
 height = size[2]
@@ -176,32 +176,32 @@ height = size[2]
 # We store the pixel values of the original image in an array
 pixvalues = getpixels(oldimgcontent, width, height)
 
-# If the user wants HSV sorting we have to convert the values
-if userchoice == "hsv":
-    pixvalues = rgbtohsv(pixvalues)
+algostarttime = time.time()
 
 if userchoice == "hsp":
-    # it works
     sortedvalues = sort_hsp(pixvalues)
 elif userchoice == "red" or userchoice == "hsv":
-    # it works
+    # HSV sorting - We have to convert the values from RGB to HSV
+    if userchoice == "hsv":
+        pixvalues = rgbtohsv(pixvalues)
     sortedvalues = sort_firstvalue(pixvalues)
+    # HSV Sorting - Convert the values back from HSV to RGB to write them in the image
+    if userchoice == "hsv":
+        sortedvalues = hsvtorgb(sortedvalues)
 elif userchoice == "rellum":
-    sortedvalues = sort_rellum(pixvalues)
+    sortedvalues = sort_rellum(pixvalues)  # print(pixvalues)
+    # print(sortedvalues)
 
-# print(pixvalues)
-# print(sortedvalues)
+print("--- algorithm execution time: %s s--" % (time.time() - algostarttime))
 
 newimg, newimgcontent = imgcreate(width, height)
 
-# Convert the values back from HSV to RGB to write them in the image
-if userchoice == "hsv":
-    sortedvalues = hsvtorgb(sortedvalues)
-
+# Write the content of the image
 sortedimg = writepixels(sortedvalues, newimgcontent, width, height)
 
-# Pixel values are correct, but there's an error on the save process
-# because the output image is not right
+# Save the image
 saveimg(newimg, "img-output.jpg")
 
-print("-- exec time: %s seconds --" % (time.time() - start_time))
+print("\nOutput file: img-output.jpg\n")
+
+print("-- total exec time: %s seconds --" % (time.time() - start_time))
