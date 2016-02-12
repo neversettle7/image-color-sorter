@@ -80,7 +80,7 @@ Having zero experience in Python and color theory these are the resources I main
 [HSP_link]: <http://alienryderflex.com/hsp.html>
 [rellum_link]: <https://en.wikipedia.org/wiki/Relative_luminance>
 [original_image]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-input.jpg>
-[example_hue]: <https://github.com/neversettle7/image-color-sorter/blob/master/example_hue.jpg>
-[example_hsp]: <https://github.com/neversettle7/image-color-sorter/blob/master/example_hsp.jpg>
-[example_rellum]: <https://github.com/neversettle7/image-color-sorter/blob/master/example_rellum.jpg>
+[example_hue]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hue.jpg>
+[example_hsp]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hsp.jpg>
+[example_rellum]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-rellum.jpg>
 [example_rgb]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-red.jpg>
