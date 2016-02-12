@@ -4,6 +4,28 @@
 
 Basically, it gets an image as input, then outputs the same image with his pixels sorted by color. There are gonna be more informations about the algorithms used at the end of this page.
 
+##### Examples
+
+Original image:
+
+![Alt text][original_image]
+
+Output with hue sorting:
+
+![Alt text][example_hue]
+
+Output with hsp:
+
+![Alt text][example_hsp]
+
+Output with relative luminance:
+
+![Alt text][example_rellum]
+
+Output with rgb sorting (red):
+
+![Alt text][example_rgb]
+
 ### Why did you decide to develop this (in)utility?
 
 I wanted to learn Python development and I just kinda leaned towards this little idea that I had in mind for a long time.
@@ -45,8 +67,20 @@ The [relative luminance][rellum_link] is a value to get the luminance of a color
 #### Red scale - RGB model
 This is a very simple algorithm (which is not really effective, but I originally wrote it for testing purposes then decided to leave it there as a simple demonstration) sorting the colors based on the first value of the RGB model (red intensity).
 
+## Additional resources
+
+Having zero experience in Python and color theory these are the resources I mainly used to gather informations, in addition to the sources I've already linked previously, if you're interested in knowing more.
+
+- http://www.alanzucconi.com/2015/09/30/colour-sorting/
+- http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
+
 [Python_download]: <https://www.python.org/downloads/>
 [Pillow_link]: <https://pillow.readthedocs.org/en/3.1.x/>
 [HSV_link]: <https://en.wikipedia.org/wiki/HSL_and_HSV>
 [HSP_link]: <http://alienryderflex.com/hsp.html>
 [rellum_link]: <https://en.wikipedia.org/wiki/Relative_luminance>
+[original_link]: <example_input.jpg>
+[example_hue]: <example_hue.jpg>
+[example_hsp]: <example_hsp.jpg>
+[example_rellum]: <example_rellum.jpg>
+[example_rgb]: <example_rgb.jpg>
