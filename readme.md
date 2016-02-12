@@ -1,14 +1,14 @@
 # Image color sorter
-<p>
-> What does this program do?
+
+### What does this program do?
 
 Basically, it gets an image as input, then outputs the same image with his pixels sorted by color.
-<p>
-> Why did you decide to develop this (in)utility?
+
+### Why did you decide to develop this (in)utility?
 
 I wanted to learn Python development and I just kinda leaned towards this little idea that I had in mind for a long time.
-<p>
-> How do I get this stuff running?
+
+### How do I get this stuff running?
 
 Assuming you don't have Python already installed (especially if you're on windows), go grab it at [Python official site][Python_download].
 
@@ -29,10 +29,10 @@ Now go to the folder where you downloaded my software using your prompt window/t
     $ python pixelsorter.py
 
 Have fun!
-<p>
-> Your code sucks, bro.
 
-Yes, I already know that. It's gonna be full of errors and poor-optimized code, but this is just my first Python project, so take it easy.
+### Your code sucks, bro.
+
+Yes, I already know that. It's gonna be full of errors and poor-optimized code, but this is my first Python project, so take it easy.
 
 [Python_download]: <https://www.python.org/downloads/>
 [Pillow_link]: <https://pillow.readthedocs.org/en/3.1.x/>
