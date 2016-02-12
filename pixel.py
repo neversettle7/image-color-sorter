@@ -81,11 +81,54 @@ def hsvtorgb(array):
     return arraymod
 
 
-def sortarray_firstvalue(array):
+def sort_firstvalue(array):
     """This function sorts the array simply based on the first value.
        Example: hue for the HSV format (hue, saturation, value), red for RGB and so on"""
     array.sort()
     return array
+
+
+def sort_hsp(array):
+    """This function sorts the array based on the HSP color model (RGB) of perceived brightness:
+    0.299 * red^2 + 0.587 * green^2 + 0.114 * blue^2 """
+    hspstart = time.time()
+    finalarray = []
+    sortarray = []
+    for x in range(0,len(array)):
+        red, green, blue = array[x]
+        brightness = ((0.299 * (red ** 2)) + (0.587 * (green ** 2)) + (0.114 * (blue ** 2)))
+        temparray = []
+        temparray.append(brightness)
+        temparray.append(array[x])
+        sortarray.append(temparray)
+        pass
+    sortarray.sort()
+    finalarray = [x[1] for x in sortarray]
+    print("***sort_hsp exec time: %s" % (time.time() - hspstart))
+    return finalarray
+
+
+def sort_rellum(array):
+    """This function sorts the array based on the relative luminance (standard for certain colour spaces).
+    0.2126 * red + 0.7152 * green + 0.0722 * blue
+    It is based on the photometric definition of luminance with the values normalized to 1 or 100
+    for a reference white"""
+    rellumstart = time.time()
+    finalarray = []
+    sortarray = []
+    for x in range(0,len(array)):
+        red, green, blue = array[x]
+        brightness = ((0.2126 * red) + (0.7152 * green) + (0.0722 * blue))
+        temparray = []
+        temparray.append(brightness)
+        temparray.append(array[x])
+        sortarray.append(temparray)
+        pass
+    sortarray.sort()
+    finalarray = [x[1] for x in sortarray]
+    print("***sort_rellum exec time: %s" % (time.time() - rellumstart))
+    return finalarray
+
 
 
 def writepixels(array, image, width, height):
@@ -114,9 +157,16 @@ def writepixels(array, image, width, height):
 print("Which sorting algorithm do you want to use?\n")
 print("1. Hue sorting (HSV)")
 print("2. Brightness - HSP color model (RGB)")
-print("3. Red - Simple red sorting (RGB)")
+print("3. Relative luminance")
+print("4. Red - Simple red sorting (RGB)")
 
-userinput = input("Enter the number: ")
+algo = {'1': 'hsv', '2': 'hsp', '3': 'rellum', '4': 'red'}
+userinput = input("Select the algorithm: ")
+if userinput in algo:
+    userchoice = algo[userinput]
+    print(userchoice)
+else:
+    print("Number not recognised.")
 
 oldimg, oldimgcontent = imgopen("img-input-large.jpg")
 size = getsize(oldimg)
@@ -127,10 +177,17 @@ height = size[2]
 pixvalues = getpixels(oldimgcontent, width, height)
 
 # If the user wants HSV sorting we have to convert the values
-if userinput == "1":
+if userchoice == "hsv":
     pixvalues = rgbtohsv(pixvalues)
 
-sortedvalues = sortarray_firstvalue(pixvalues)
+if userchoice == "hsp":
+    # it works
+    sortedvalues = sort_hsp(pixvalues)
+elif userchoice == "red" or userchoice == "hsv":
+    # it works
+    sortedvalues = sort_firstvalue(pixvalues)
+elif userchoice == "rellum":
+    sortedvalues = sort_rellum(pixvalues)
 
 # print(pixvalues)
 # print(sortedvalues)
@@ -138,7 +195,7 @@ sortedvalues = sortarray_firstvalue(pixvalues)
 newimg, newimgcontent = imgcreate(width, height)
 
 # Convert the values back from HSV to RGB to write them in the image
-if userinput == "1":
+if userchoice == "hsv":
     sortedvalues = hsvtorgb(sortedvalues)
 
 sortedimg = writepixels(sortedvalues, newimgcontent, width, height)
