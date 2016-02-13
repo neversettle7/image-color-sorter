@@ -14,14 +14,14 @@ def imgopen(filename):
     """This function opens an image file"""
     img = Image.open(filename)
     loadedimg = img.load()
-    return (img, loadedimg)
+    return img, loadedimg
 
 
 def imgcreate(width, height):
     """This function creates a new image file - IT IS NOT SAVING IT"""
     img = Image.new("RGB", (width, height))
     newloaded = img.load()
-    return (img, newloaded)
+    return img, newloaded
 
 
 def saveimg(image, filename):
@@ -40,7 +40,7 @@ def getsize(image):
     width, height = image.size
     size = image.size
     print("\n-- Size of the image is: {0} ({1}x{2})\n".format(size, width, height))
-    return (size, width, height)
+    return size, width, height
 
 
 def getpixels(image, width, height):
@@ -51,7 +51,7 @@ def getpixels(image, width, height):
           "--------------------------\n")"""
     for y in range(0, height):
         for x in range(0, width):
-            red, green, blue = (image[x, y])
+            # red, green, blue = (image[x, y])
             array.append(image[x, y])
             """print("Values for pixel of x: {0} and y: {1}".format(x + 1, y + 1))
             print("RGB values: {0}".format(image[x, y]))  # we get the rgb value for debug purposes
@@ -68,9 +68,7 @@ def rgbtohsv(array):
         red, green, blue = array[x]
         red, green, blue = [x / 255.0 for x in (red, green, blue)]
         hsvcolors = colorsys.rgb_to_hsv(red, green, blue)
-        temparray = []
-        temparray.append(hsvcolors)
-        temparray.append(array[x])
+        temparray = [hsvcolors, array[x]]
         arraymod.append(temparray)
         pass
     return arraymod
@@ -99,9 +97,7 @@ def rgbtohsl(array):
         red, green, blue = [x / 255.0 for x in (red, green, blue)]
         # Note that the colorsys library uses "hls" to refer to "hsl", instead of the usual name
         hslcolors = colorsys.rgb_to_hls(red, green, blue)
-        temparray = []
-        temparray.append(hslcolors)
-        temparray.append(array[x])
+        temparray = [hslcolors, array[x]]
         arraymod.append(temparray)
         pass
     return arraymod
@@ -126,9 +122,7 @@ def sort_hsl(array):
     for x in range(0, len(array)):
         hue, saturation, lightness = array[x][0]
         value = ((lightness * 5) + (saturation * 2) + hue)
-        temparray = []
-        temparray.append(value)
-        temparray.append(array[x][1])
+        temparray = [value, array[x][1]]
         sortarray.append(temparray)
         pass
     sortarray.sort()
@@ -150,9 +144,7 @@ def sort_hsp(array):
     for x in range(0, len(array)):
         red, green, blue = array[x]
         brightness = ((0.299 * (red ** 2)) + (0.587 * (green ** 2)) + (0.114 * (blue ** 2)))
-        temparray = []
-        temparray.append(brightness)
-        temparray.append(array[x])
+        temparray = [brightness, array[x]]
         sortarray.append(temparray)
         pass
     sortarray.sort()
@@ -170,9 +162,7 @@ def sort_rellum(array):
     for x in range(0, len(array)):
         red, green, blue = array[x]
         brightness = ((0.2126 * red) + (0.7152 * green) + (0.0722 * blue))
-        temparray = []
-        temparray.append(brightness)
-        temparray.append(array[x])
+        temparray = [brightness, array[x]]
         sortarray.append(temparray)
         pass
     sortarray.sort()
@@ -210,7 +200,7 @@ def run(fileinput, userchoice):
     :return:
     """
 
-    print("\nExecuting {0} algorithm\n" .format(userchoice))
+    print("\nExecuting {0} algorithm\n".format(userchoice))
     # Open the file, get the content and the size
     oldimg, oldimgcontent = imgopen(fileinput)
     size = getsize(oldimg)
@@ -243,13 +233,14 @@ def run(fileinput, userchoice):
     newimg, newimgcontent = imgcreate(width, height)
 
     # Write the content of the image
-    sortedimg = writepixels(sortedvalues, newimgcontent, width, height)
+    writepixels(sortedvalues, newimgcontent, width, height)
 
     # Save the image
     saveimg(newimg, "output/img-output-" + userchoice + ".jpg")
 
     print("\nOutput file: output/img-output-" + userchoice + ".jpg\n")
     return
+
 
 # Let the user insert the filename and the chosen algorithm
 print("\n\n-------------------------------------------------")
@@ -274,14 +265,12 @@ if userinput in algo:
     userchoice = algo[userinput]
     run(fileinput, userchoice)
 elif userinput == "0":
-    for x in range(1,len(algo)+1):
+    for x in range(1, len(algo) + 1):
         userchoice = algo[str(x)]
-        run(fileinput,userchoice)
+        run(fileinput, userchoice)
         pass
 else:
     print("Number not recognised. Exiting program.")
     sys.exit()
-
-
 
 print("-- total exec time: %s seconds --" % (time.time() - start_time))
