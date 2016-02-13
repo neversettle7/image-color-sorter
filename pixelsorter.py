@@ -66,8 +66,12 @@ def rgbtohsv(array):
     arraymod = []
     for x in range(0, len(array)):
         red, green, blue = array[x]
+        red, green, blue = [x / 255.0 for x in (red, green, blue)]
         hsvcolors = colorsys.rgb_to_hsv(red, green, blue)
-        arraymod.append(hsvcolors)
+        temparray = []
+        temparray.append(hsvcolors)
+        temparray.append(array[x])
+        arraymod.append(temparray)
         pass
     return arraymod
 
@@ -82,13 +86,23 @@ def hsvtorgb(array):
     return arraymod
 
 
+def sort_hsv(array):
+    array.sort()
+    arraydef = [x[1] for x in array]
+    return arraydef
+
+
 def rgbtohsl(array):
     arraymod = []
     for x in range(0, len(array)):
         red, green, blue = array[x]
+        red, green, blue = [x / 255.0 for x in (red, green, blue)]
         # Note that the colorsys library uses "hls" to refer to "hsl", instead of the usual name
         hslcolors = colorsys.rgb_to_hls(red, green, blue)
-        arraymod.append(hslcolors)
+        temparray = []
+        temparray.append(hslcolors)
+        temparray.append(array[x])
+        arraymod.append(temparray)
         pass
     return arraymod
 
@@ -102,6 +116,24 @@ def hsltorgb(array):
         arraymod.append(rgbcolors)
         pass
     return arraymod
+
+
+def sort_hsl(array):
+    """This function sorts the array based on the HSL color model and a formula found on stack overflow:
+    http://stackoverflow.com/questions/3014402/sorting-a-list-of-colors-in-one-dimension
+    lightness * 5 + saturation * 2 + hue """
+    sortarray = []
+    for x in range(0, len(array)):
+        hue, saturation, lightness = array[x][0]
+        value = ((lightness * 5) + (saturation * 2) + hue)
+        temparray = []
+        temparray.append(value)
+        temparray.append(array[x][1])
+        sortarray.append(temparray)
+        pass
+    sortarray.sort()
+    finalarray = [x[1] for x in sortarray]
+    return finalarray
 
 
 def sort_firstvalue(array):
@@ -120,24 +152,6 @@ def sort_hsp(array):
         brightness = ((0.299 * (red ** 2)) + (0.587 * (green ** 2)) + (0.114 * (blue ** 2)))
         temparray = []
         temparray.append(brightness)
-        temparray.append(array[x])
-        sortarray.append(temparray)
-        pass
-    sortarray.sort()
-    finalarray = [x[1] for x in sortarray]
-    return finalarray
-
-
-def sort_hsl(array):
-    """This function sorts the array based on the HSL color model and a formula found on stack overflow:
-    http://stackoverflow.com/questions/3014402/sorting-a-list-of-colors-in-one-dimension
-    lightness * 5 + saturation * 2 + hue """
-    sortarray = []
-    for x in range(0, len(array)):
-        hue, saturation, lightness = array[x]
-        value = ((lightness * 5) + (saturation * 2) + hue)
-        temparray = []
-        temparray.append(value)
         temparray.append(array[x])
         sortarray.append(temparray)
         pass
@@ -210,23 +224,17 @@ def run(fileinput, userchoice):
 
     if userchoice == "hsp":
         sortedvalues = sort_hsp(pixvalues)
-    elif userchoice == "red" or userchoice == "hsv" or userchoice == "hsl":
-        # HSL sorting - We have to convert the values from RGB to HSL
-        if userchoice == "hsl":
-            pixvalues = rgbtohsl(pixvalues)
-            sortedvalues = sort_hsl(pixvalues)
-        # HSV sorting - We have to convert the values from RGB to HSV
-        # and then we can use the sorting based on first value
-        if userchoice == "hsv":
-            pixvalues = rgbtohsv(pixvalues)
-        if userchoice == "hsv" or userchoice == "red":
-            sortedvalues = sort_firstvalue(pixvalues)
-        # HSV Sorting - Convert the values back from HSV to RGB to write them in the image
-        if userchoice == "hsv":
-            sortedvalues = hsvtorgb(sortedvalues)
-        if userchoice == "hsl":
-            sortedvalues = hsltorgb(sortedvalues)
-    elif userchoice == "rellum":
+    # HSL sorting - We have to convert the values from RGB to HSL and then sort
+    if userchoice == "hsl":
+        pixvalues = rgbtohsl(pixvalues)
+        sortedvalues = sort_hsl(pixvalues)
+    # HSV sorting - We have to convert the values from RGB to HSV and then sort
+    if userchoice == "hsv":
+        pixvalues = rgbtohsv(pixvalues)
+        sortedvalues = sort_hsv(pixvalues)
+    if userchoice == "red":
+        sortedvalues = sort_firstvalue(pixvalues)
+    if userchoice == "rellum":
         sortedvalues = sort_rellum(pixvalues)  # print(pixvalues)
         # print(sortedvalues)
 
@@ -240,14 +248,14 @@ def run(fileinput, userchoice):
     # Save the image
     saveimg(newimg, "output/img-output-" + userchoice + ".jpg")
 
-    print("\nOutput file: img-output.jpg\n")
+    print("\nOutput file: output/img-output-" + userchoice + ".jpg\n")
     return
 
 # Let the user insert the filename and the chosen algorithm
 print("\n\n-------------------------------------------------")
 print("Insert the name of the image you want to sort")
 print("PLEASE NOTE: the image should be in the \"input\" folder.")
-print("Inser the name WITHOUT the folder path (example: image.jpg)\n")
+print("Insert the name WITHOUT the folder path (example: image.jpg)\n")
 fileinput = input("Leave blank if you want to use the default image (img-input-small.jpg): ")
 if fileinput == "":
     fileinput = "img-input-small.jpg"
