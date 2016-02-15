@@ -11,7 +11,7 @@ from explorer import *
 start_time = time.time()
 
 
-def run(fileinput, userchoice):
+def run(fileinput, userchoice, fillpattern):
     """
     This is the main function calling all the other methods.
     :param fileinput: the file to be taken as input
@@ -60,7 +60,10 @@ def run(fileinput, userchoice):
     newimg, newimgcontent = explorer.imgcreate(width, height)
 
     # Write the content of the image
-    painter.writepixels(sortedvalues, newimgcontent, width, height)
+    if fillpattern == 'horizontal':
+        painter.fill_horizontal(sortedvalues, newimgcontent, width, height)
+    elif fillpattern == 'vertical':
+        painter.fill_vertical(sortedvalues,newimgcontent, width, height)
 
     # Save the image
     explorer.saveimg(newimg, "output/img-output-" + userchoice + ".jpg")
@@ -69,7 +72,9 @@ def run(fileinput, userchoice):
     return
 
 
-# Let the user insert the filename and the chosen algorithm
+# Let the user choose the options
+
+# Choose the file
 print("\n\n-------------------------------------------------")
 print("Insert the name of the image you want to sort")
 print("PLEASE NOTE: the image should be in the \"input\" folder.")
@@ -78,6 +83,8 @@ fileinput = input("Leave blank if you want to use the default image (img-input-s
 if fileinput == "":
     fileinput = "img-input-small.jpg"
 fileinput = "input/" + fileinput
+
+# Choose the algorithm
 print("\nWhich sorting algorithm do you want to use?\n")
 print("1. Hue sorting (HSV)")
 print("2. Brightness - HSP color model (RGB)")
@@ -85,19 +92,29 @@ print("3. Relative luminance")
 print("4. Red - Simple red sorting (RGB)")
 print("5. HSL")
 print("0. All of the available algorithms")
-
 algo = {'1': 'hsv', '2': 'hsp', '3': 'rellum', '4': 'red', '5': 'hsl'}
 userinput = input("Select the algorithm: ")
-if userinput in algo:
-    userchoice = algo[userinput]
-    run(fileinput, userchoice)
-elif userinput == "0":
-    for x in range(1, len(algo) + 1):
-        userchoice = algo[str(x)]
-        run(fileinput, userchoice)
-        pass
-else:
-    print("Number not recognised. Exiting program.")
-    sys.exit()
+
+# Choose the fill pattern
+print("\nWhich fill pattern do you want to use?\n")
+print("1. Vertical pattern (column by column)")
+print("2. Horizontal pattern (row by row)")
+pattern = ({ '1': 'vertical', '2' : 'horizontal'})
+fillpattern = input("Select the pattern: ")
+
+patternchoice = pattern[fillpattern]
+
+if fillpattern in pattern:
+    if userinput in algo:
+        userchoice = algo[userinput]
+        run(fileinput, userchoice, patternchoice)
+    elif userinput == "0":
+        for x in range(1, len(algo) + 1):
+            userchoice = algo[str(x)]
+            run(fileinput, userchoice, patternchoice)
+            pass
+    else:
+        print("Options not valid. Exiting program.")
+        sys.exit()
 
 print("-- total exec time: %s seconds --" % (time.time() - start_time))
