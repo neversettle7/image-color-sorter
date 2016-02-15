@@ -26,6 +26,10 @@ Output with rgb sorting (red):
 
 ![Alt text][example_rgb]
 
+Output with HSL sorting:
+
+![Alt text][example_hsl]
+
 ### Why did you decide to develop this (in)utility?
 
 I wanted to learn Python development and I just kinda leaned towards this little idea that I had in mind for a long time.
@@ -63,9 +67,11 @@ Based on the [HSP color model][HSP_link], which is an alternative to HSV. The re
 #### Relative luminance
 The [relative luminance][rellum_link] is a value to get the luminance of a color. Again, we get the RGB values and multiply them by three costants. Note that the three constants are, like in the HSP model, based on the luminosity function: the green value is more important because contributes the most to how the intensity is perceived by the human eye (then red and blue).
 
-
 #### Red scale - RGB model
 This is a very simple algorithm (which is not really effective, but I originally wrote it for testing purposes then decided to leave it there as a simple demonstration) sorting the colors based on the first value of the RGB model (red intensity).
+
+#### HSL sorting
+This algorithm is based on [this Stack Overflow question][HSL_question]. I hadn't tried an HSL algorithm before, so I figured I'd give it a shot. The pixels are sorted based on different weights assigned to the values of the HSL model.
 
 ## Additional resources
 
@@ -84,3 +90,5 @@ Having zero experience in Python and color theory these are the resources I main
 [example_hsp]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hsp.jpg>
 [example_rellum]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-rellum.jpg>
 [example_rgb]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-red.jpg>
+[example_hsl]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hsl.jpg>
+[HSL_question]: <http://stackoverflow.com/a/3014483/1424173>
