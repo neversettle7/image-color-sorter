@@ -43,20 +43,43 @@ class Painter:
         return array
 
     @staticmethod
-    def writepixels(array, image, width, height):
+    def fill_horizontal(array, image, width, height):
         """
-        This function writes the pixel values in the output image
+        This function writes the pixel values in the output image row by row
         :param array: the array that contains the values of the pixel to be written
         :param image: the image that should be written on
         :param width: the width of the image
         :param height: the height of the image
         """
-        """print("------------------------\n"
-              "----- EDITED IMAGE -----\n"
-              "------------------------\n")"""
         i = 0
         for y in range(0, height):
             for x in range(0, width):
+                # Write the new color
+                red, green, blue = array[i]
+                # image[x, y] = array[i]
+                image[x, y] = int(red), int(green), int(blue)
+                """print("Values for pixel of x: {0} and y: {1}".format(x + 1, y + 1))
+                print("RGB values: {0}".format(image[x, y]))  # we get the rgb value for debug purposes
+                print("HSV values: {0}".format(array[i]))
+                print("\n")"""
+                i += 1
+                # print(image[x, y])
+                pass
+            pass
+        return image
+
+    @staticmethod
+    def fill_vertical(array, image, width, height):
+        """
+        This function writes the pixel values in the output image column by column
+        :param array: the array that contains the values of the pixel to be written
+        :param image: the image that should be written on
+        :param width: the width of the image
+        :param height: the height of the image
+        """
+        i = 0
+        for x in range(0, width):
+            for y in range(0, height):
                 # Write the new color
                 red, green, blue = array[i]
                 # image[x, y] = array[i]

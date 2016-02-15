@@ -85,10 +85,10 @@ Having zero experience in Python and color theory these are the resources I main
 [HSV_link]: <https://en.wikipedia.org/wiki/HSL_and_HSV>
 [HSP_link]: <http://alienryderflex.com/hsp.html>
 [rellum_link]: <https://en.wikipedia.org/wiki/Relative_luminance>
-[original_image]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-input.jpg>
-[example_hue]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hue.jpg>
-[example_hsp]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hsp.jpg>
-[example_rellum]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-rellum.jpg>
-[example_rgb]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-red.jpg>
-[example_hsl]: <https://github.com/neversettle7/image-color-sorter/blob/master/example-hsl.jpg>
+[original_image]: <https://github.com/neversettle7/image-color-sorter/blob/master/examples/example-input.jpg>
+[example_hue]: <https://github.com/neversettle7/image-color-sorter/blob/master/examples/example-hue.jpg>
+[example_hsp]: <https://github.com/neversettle7/image-color-sorter/blob/master/examples/example-hsp.jpg>
+[example_rellum]: <https://github.com/neversettle7/image-color-sorter/blob/master/examples/example-rellum.jpg>
+[example_rgb]: <https://github.com/neversettle7/image-color-sorter/blob/master/examples/example-red.jpg>
+[example_hsl]: <https://github.com/neversettle7/image-color-sorter/blob/master/examples/example-hsl.jpg>
 [HSL_question]: <http://stackoverflow.com/a/3014483/1424173>
