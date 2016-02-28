@@ -64,6 +64,8 @@ def run(fileinput, userchoice, fillpattern):
         painter.fill_horizontal(sortedvalues, newimgcontent, width, height)
     elif fillpattern == 'vertical':
         painter.fill_vertical(sortedvalues,newimgcontent, width, height)
+    elif fillpattern == 'spiral':
+        painter.fill_spiral(sortedvalues,newimgcontent, width, height)
 
     # Save the image
     explorer.saveimg(newimg, "output/img-output-" + userchoice + ".jpg")
@@ -99,7 +101,8 @@ userinput = input("Select the algorithm: ")
 print("\nWhich fill pattern do you want to use?\n")
 print("1. Vertical pattern (column by column)")
 print("2. Horizontal pattern (row by row)")
-pattern = ({ '1': 'vertical', '2' : 'horizontal'})
+print("3. Spiral pattern")
+pattern = ({ '1': 'vertical', '2' : 'horizontal', '3' : 'spiral'})
 fillpattern = input("Select the pattern: ")
 
 patternchoice = pattern[fillpattern]

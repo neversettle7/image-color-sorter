@@ -5,7 +5,7 @@ class Painter:
     """
 
     def __init__(self):
-        #print("~~~ Filler started ~~~")
+        # print("~~~ Filler started ~~~")
         return
 
     @staticmethod
@@ -93,3 +93,40 @@ class Painter:
                 pass
             pass
         return image
+
+    @staticmethod
+    def fill_spiral(array, image, width, height):
+        """
+        This function writes the pixel values in the output image with a spiral pattern
+        :param array: the array that contains the values of the pixel to be written
+        :param image: the image that should be written on
+        :param width: the width of the image
+        :param height: the height of the image
+        :return:
+        """
+        totpix = width * height
+        i = 0
+        sortcounter = 0
+        x = y = 0
+        while sortcounter != (totpix - 1):
+            for y in range (y + 1, height - i, 1):
+                if sortcounter == 0:
+                    y = 0
+                red, green, blue = array[sortcounter]
+                image[x,y] = int(red), int(green), int(blue)
+                sortcounter += 1
+            for x in range(x + 1, width - i, 1):
+                red, green, blue = array[sortcounter]
+                image[x,y] = int(red), int(green), int(blue)
+                sortcounter += 1
+            for y in range (y - 1, i - 1, -1):
+                red, green, blue = array[sortcounter]
+                image[x,y] = int(red), int(green), int(blue)
+                sortcounter += 1
+            for x in range (x - 1, i, -1):
+                red, green, blue = array[sortcounter]
+                image[x,y] = int(red), int(green), int(blue)
+                sortcounter += 1
+            i += 1
+        return image
+
