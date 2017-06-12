@@ -2,6 +2,7 @@
 # PIL library to manipulate images
 # colorsys library to manipulate colors
 # operator library to sort the values of the array in the fastest way
+import os
 import sys
 import time
 from sorter import *
@@ -9,7 +10,9 @@ from painter import *
 from explorer import *
 
 start_time = time.time()
-
+#script_dir = os.path.dirname(__file__) # the absolute path of the script
+script_dir = os.path.dirname(os.path.abspath(__file__)) # the absolute path of the script
+print(script_dir);
 
 def run(fileinput, userchoice, fillpattern):
     """
@@ -68,9 +71,11 @@ def run(fileinput, userchoice, fillpattern):
         painter.fill_spiral(sortedvalues,newimgcontent, width, height)
 
     # Save the image
-    explorer.saveimg(newimg, "output/img-output-" + userchoice + ".jpg")
+    output_name = "img-output-" + userchoice + ".jpg"
+    output_path = os.path.join(script_dir, 'output', output_name)
+    explorer.saveimg(newimg, output_path)
 
-    print("\nOutput file: output/img-output-" + userchoice + ".jpg\n")
+    print("\nOutput file: /output/img-output-" + userchoice + ".jpg\n")
     return
 
 
@@ -84,7 +89,7 @@ print("Insert the name WITHOUT the folder path (example: image.jpg)\n")
 fileinput = input("Leave blank if you want to use the default image (img-input-small.jpg): ")
 if fileinput == "":
     fileinput = "img-input-small.jpg"
-fileinput = "input/" + fileinput
+input_path = os.path.join(script_dir, 'input', fileinput)
 
 # Choose the algorithm
 print("\nWhich sorting algorithm do you want to use?\n")
@@ -110,11 +115,11 @@ patternchoice = pattern[fillpattern]
 if fillpattern in pattern:
     if userinput in algo:
         userchoice = algo[userinput]
-        run(fileinput, userchoice, patternchoice)
+        run(input_path, userchoice, patternchoice)
     elif userinput == "0":
         for x in range(1, len(algo) + 1):
             userchoice = algo[str(x)]
-            run(fileinput, userchoice, patternchoice)
+            run(input_path, userchoice, patternchoice)
             pass
     else:
         print("Options not valid. Exiting program.")
