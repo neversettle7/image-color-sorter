@@ -38,8 +38,10 @@ I wanted to learn Python development and I just kinda leaned towards this little
 
 Assuming you don't have Python already installed (especially if you're on windows), go grab it at [Python official site][Python_download].
 
+*Note that this project requires Python 3.*
+
 Go ahead with the installation, then open a prompt window and type
-    
+
     $ pip install Pillow
 
 This will install [Pillow][Pillow_link] (Python Imaging Library), which is the library I'm currently using to work on images.
@@ -49,6 +51,10 @@ Looks like you're set!
 Now go to the folder where you downloaded my software using your prompt window/terminal and type:
 
     $ python pixelsorter.py
+
+If you have Python 2 and Python 3 installed at the same time you should probably type:
+
+    $ python3 pixelsorter.py
 
 Have fun!
 
